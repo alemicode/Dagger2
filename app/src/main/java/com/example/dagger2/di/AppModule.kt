@@ -18,6 +18,7 @@ class AppModule {
     companion object {
 
 
+
         @Singleton
         @Provides
         fun provideRequestOption(): RequestOptions {
