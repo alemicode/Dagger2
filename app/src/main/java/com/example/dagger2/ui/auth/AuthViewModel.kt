@@ -6,7 +6,7 @@ import javax.inject.Inject
 class AuthViewModel @Inject constructor(
 
 
-) : ViewModel()  {
+) : ViewModel() {
 
 
 }

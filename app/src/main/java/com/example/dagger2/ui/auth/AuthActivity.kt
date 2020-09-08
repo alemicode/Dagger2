@@ -14,6 +14,8 @@ import javax.inject.Inject
 class AuthActivity : DaggerAppCompatActivity() {
 
 
+
+    @Inject
     lateinit var viewModel: AuthViewModel
 
     @Inject
@@ -32,6 +34,7 @@ class AuthActivity : DaggerAppCompatActivity() {
 
         viewModel = ViewModelProvider(this,providerFactory).get(viewModel::class.java)
         setImageManager()
+
     }
 
     private fun setImageManager() {
