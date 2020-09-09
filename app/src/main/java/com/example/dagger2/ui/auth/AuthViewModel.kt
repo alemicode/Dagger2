@@ -14,7 +14,7 @@ class AuthViewModel @Inject constructor(
     init {
 
         //if using rx java
-        observablesUsingRX(authApi)
+        //observablesUsingRX(authApi)
 
 
         //if using liveDaga
@@ -26,6 +26,9 @@ class AuthViewModel @Inject constructor(
         
     }
 
+
+
+    //managing data  using RX
     private fun observablesUsingRX(authApi: AuthApi) {
 
         authApi.getUser(1)
@@ -41,6 +44,7 @@ class AuthViewModel @Inject constructor(
 
 
     }
+
 
 
 }
