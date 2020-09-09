@@ -1,7 +1,10 @@
 package com.example.dagger2.ui.auth
 
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import com.example.dagger2.models.ResponseDTO
 import com.example.dagger2.network.auth.AuthApi
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class AuthViewModel @Inject constructor(
@@ -10,14 +13,35 @@ class AuthViewModel @Inject constructor(
 ) : ViewModel() {
     init {
 
-        if (authApi == null) {
+        //if using rx java
+        observablesUsingRX(authApi)
 
-            println("debug : auth api is null")
-        } else {
 
-            println("debig : auth api is not null")
-        }
+        //if using liveDaga
+        observes(authApi)
+    }
+
+    private fun observes(authApi: AuthApi) {
+
+        
+    }
+
+    private fun observablesUsingRX(authApi: AuthApi) {
+
+        authApi.getUser(1)
+            .subscribeOn(Schedulers.io())
+
+            .subscribe({ response ->
+
+                println("debug : response is ok ${response.name} ${response.id}")
+            }, { t: Throwable? -> }
+
+
+            )
+
+
     }
 
 
 }
+
