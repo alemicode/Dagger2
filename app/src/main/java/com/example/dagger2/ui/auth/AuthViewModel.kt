@@ -1,51 +1,50 @@
 package com.example.dagger2.ui.auth
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import com.example.dagger2.models.ResponseDTO
+import androidx.lifecycle.*
+import com.example.dagger2.model.UserDTO
 import com.example.dagger2.network.auth.AuthApi
+
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class AuthViewModel @Inject constructor(
 
-    authApi: AuthApi
+    authApi1: AuthApi
 ) : ViewModel() {
-    init {
-
-        //if using rx java
-        //observablesUsingRX(authApi)
 
 
-        //if using liveDaga
-        observes(authApi)
-    }
+    val authApi = authApi1
+    private val data =
+        MediatorLiveData<UserDTO>()
 
-    private fun observes(authApi: AuthApi) {
 
-        
-    }
+    val resultLiveData: LiveData<UserDTO>
+        get() = data
+
+
+    fun auth(id: Int) {
 
 
 
-    //managing data  using RX
-    private fun observablesUsingRX(authApi: AuthApi) {
 
-        authApi.getUser(1)
+        val source1 = authApi.getUser(id)
+
+
+        source1.toObservable()
             .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
 
-            .subscribe({ response ->
+              data.postValue(it)
 
-                println("debug : response is ok ${response.name} ${response.id}")
-            }, { t: Throwable? -> }
+            }, { t: Throwable? ->
 
-
-            )
+                Exception("error : ${t?.message}")
+            })
 
 
     }
-
 
 
 }
-
