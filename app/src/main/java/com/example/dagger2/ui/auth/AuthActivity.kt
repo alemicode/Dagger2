@@ -3,15 +3,14 @@ package com.example.dagger2.ui.auth
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.RequestManager
 import com.example.dagger2.R
+import com.example.dagger2.SessionManager
 import com.example.dagger2.viewModels.ViewModelProviderFactory
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_auth.*
-import java.lang.Exception
 import javax.inject.Inject
 
 class AuthActivity : DaggerAppCompatActivity() {
@@ -29,6 +28,9 @@ class AuthActivity : DaggerAppCompatActivity() {
     @Inject
     lateinit var providerFactory: ViewModelProviderFactory
 
+
+    @Inject
+    lateinit var sessionManager: SessionManager
     lateinit var idFromUser: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +42,7 @@ class AuthActivity : DaggerAppCompatActivity() {
 
 
 
-        viewModel.resultLiveData.observe(this, Observer {
+        sessionManager.authUser.observe(this, Observer {
 
             it.let {
                 println("debug is : ${it.id}")
@@ -56,7 +58,7 @@ class AuthActivity : DaggerAppCompatActivity() {
             idFromUser.let {
                 val result = it.toInt()
 
-                viewModel.auth(result)
+                viewModel.authWithId(result)
             }
 
         })
@@ -64,16 +66,6 @@ class AuthActivity : DaggerAppCompatActivity() {
     }
 
 
-    fun showProggressbar(isVisible: Boolean) {
-
-        if (isVisible) {
-
-            progress_bar.visibility = View.VISIBLE
-        } else {
-
-            progress_bar.visibility = View.GONE
-        }
-    }
 
     private fun setImageManager() {
 

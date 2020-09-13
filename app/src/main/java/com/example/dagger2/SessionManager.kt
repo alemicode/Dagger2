@@ -15,20 +15,14 @@ class SessionManager @Inject constructor(
 ) {
 
 
-    val cacheUser: MediatorLiveData<UserDTO> = MediatorLiveData<UserDTO>()
+     val cacheUser: MediatorLiveData<UserDTO> = MediatorLiveData<UserDTO>()
 
     val authUser: LiveData<UserDTO>
         get() = cacheUser
 
 
-    fun authWithId(source: MediatorLiveData<UserDTO>) {
-        if (cacheUser != null) {
-            cacheUser.addSource(source, Observer {
-                cacheUser.postValue(it)
-            })
-        } else {
-            println("Authentication : perviuse auth detected from cache")
-        }
+    fun authWithId(source: UserDTO) {
+       cacheUser.value = source
 
     }
 }
